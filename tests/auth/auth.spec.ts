@@ -4,7 +4,7 @@ test.describe('Auth Tests', () => {
 
     test.only('Register User', async ({ signUpLoginPage }) => {
         await signUpLoginPage.goto();
-        await signUpLoginPage.registerUser("Vaibhav" , 'vaibhav@gmail.com');
+        await signUpLoginPage.registerUser();
     });
 
     test('Login with valid credentials', async ({ loginPage }) => {
