@@ -19,7 +19,7 @@ export default defineConfig({
 
   reporter: [
     ['html', { outputFolder: 'reports/html' }],
-    ['json', { outputFile: 'reports/json/results.json' }]
+    //['json', { outputFile: 'reports/json/results.json' }]
   ],
 
   projects: [

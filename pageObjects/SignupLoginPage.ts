@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 import { getNewUserData, User } from '../data/userData';
 
 export class SignUpLoginPage {
@@ -22,10 +22,11 @@ export class SignUpLoginPage {
   readonly city: Locator;
   readonly zipCode: Locator
   readonly mobileNumber: Locator;
-  readonly createAccountBtn : Locator;
-  readonly textNewUserSignup : Locator;
-  readonly textAccountVisible : Locator
+  readonly createAccountBtn: Locator;
+  readonly textNewUserSignup: Locator;
+  readonly textAccountCreated: Locator
   readonly continueBtn: Locator
+
 
   constructor(page: Page) {
     this.page = page;
@@ -50,8 +51,9 @@ export class SignUpLoginPage {
     this.mobileNumber = page.locator('[data-qa="mobile_number"]');
     this.createAccountBtn = page.getByRole('button', { name: 'Create Account' })
     this.textNewUserSignup = page.getByRole('heading', { name: 'New User Signup!' })
-    this.textAccountVisible = page.getByText('Account Created!', { exact: true })
-    this.continueBtn= page.locator('[data-qa="continue-button"]')
+    this.textAccountCreated = page.getByText('Account Created!', { exact: true })
+    this.continueBtn = page.locator('[data-qa="continue-button"]')
+
   }
 
   async goto() {
@@ -64,15 +66,15 @@ export class SignUpLoginPage {
     await this.signupButton.click();
   }
 
-  async fillAccountDetails(user: User ) : Promise<Locator>{
-    
+  async fillAccountDetails(user: User): Promise<void> {
+
     await this.accountDetailsTitle.click();
     await this.accountDetailsPassword.fill(user.password)
     await this.dateOfBirthDay.selectOption('4');
     await this.dateOfBirthMonth.selectOption('June')
     await this.dateOfBirthYear.selectOption('2006')
-    await this.newsletterCheckbox.click();
-    await this.specialOfferCheckbox.click();
+    await this.newsletterCheckbox.check();
+    await this.specialOfferCheckbox.check();
     await this.firstName.fill(user.firstName)
     await this.lastName.fill(user.lastName)
     await this.companyName.fill(user.company)
@@ -82,9 +84,15 @@ export class SignUpLoginPage {
     await this.city.fill(user.city)
     await this.zipCode.fill(user.zipcode)
     await this.mobileNumber.fill(user.mobile)
-    await this.createAccountBtn.click()
-    return this.textAccountVisible
+    await this.createAccountBtn.click()  
   }
+
+  async getAccountTextAndContinueClick(): Promise<string> {
+    const text = await this.textAccountCreated.textContent();
+    if (!text) throw new Error("Text not found");
+    await this.continueBtn.click();
+    return text;
+}
 
 
 }
