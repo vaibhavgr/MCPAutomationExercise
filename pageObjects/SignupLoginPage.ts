@@ -1,5 +1,4 @@
 import { Locator, Page } from "@playwright/test";
-import {UniqueGenerator} from "../utils/UniqueGenerator"
 
 export class SignUpLoginPage {
   readonly page: Page;
@@ -20,9 +19,9 @@ export class SignUpLoginPage {
     await this.page.goto('/login');
   }
 
-  async registerUser( ) : Promise<any> {
-    await this.signupName.fill(UniqueGenerator.getUniqueName())
-    await this.signupEmail.fill(UniqueGenerator.getUniqueEmail());
+  async registerUser(name: string, email: string) : Promise<void> {
+    await this.signupName.fill(name);
+    await this.signupEmail.fill(email);
     await this.signupButton.click();
 
     await this.page.pause();

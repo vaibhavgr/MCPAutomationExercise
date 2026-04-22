@@ -1,10 +1,13 @@
 import { test} from '../fixtures/baseTest';
+import { getNewUserData } from '../../data/userData';
 
 test.describe('Auth Tests', () => {
 
     test.only('Register User', async ({ signUpLoginPage }) => {
+        const user = getNewUserData();
+        
         await signUpLoginPage.goto();
-        await signUpLoginPage.registerUser();
+        await signUpLoginPage.registerUser(user.name, user.email);
     });
 
     test('Login with valid credentials', async ({ loginPage }) => {
