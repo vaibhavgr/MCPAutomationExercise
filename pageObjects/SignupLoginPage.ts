@@ -3,9 +3,13 @@ import { getNewUserData, User } from '../data/userData';
 
 export class SignUpLoginPage {
   readonly page: Page;
+
+  // Signup
   readonly signupName: Locator;
   readonly signupEmail: Locator;
   readonly signupButton: Locator;
+
+  //Account info
   readonly accountDetailsTitle: Locator;
   readonly accountDetailsPassword: Locator;
   readonly dateOfBirthDay: Locator;
@@ -22,14 +26,19 @@ export class SignUpLoginPage {
   readonly city: Locator;
   readonly zipCode: Locator
   readonly mobileNumber: Locator;
+
+  //Buttons
+  readonly continueBtn: Locator
   readonly createAccountBtn: Locator;
+
+  //Assertions
   readonly textNewUserSignup: Locator;
   readonly textAccountCreated: Locator
-  readonly continueBtn: Locator
-
+  readonly textalreadyregisterUser : Locator
 
   constructor(page: Page) {
     this.page = page;
+
     this.signupName = page.locator('[data-qa="signup-name"]');
     this.signupEmail = page.locator('[data-qa="signup-email"]');
     this.signupButton = page.getByRole('button', { name: 'Signup' })
@@ -53,9 +62,10 @@ export class SignUpLoginPage {
     this.textNewUserSignup = page.getByRole('heading', { name: 'New User Signup!' })
     this.textAccountCreated = page.getByText('Account Created!', { exact: true })
     this.continueBtn = page.locator('[data-qa="continue-button"]')
+    this.textalreadyregisterUser = page.getByText('Email Address already exist!', { exact: true });
 
   }
-
+  // ---- ACTIONS ------
   async goto() {
     await this.page.goto('/login');
   }
@@ -67,7 +77,6 @@ export class SignUpLoginPage {
   }
 
   async fillAccountDetails(user: User): Promise<void> {
-
     await this.accountDetailsTitle.click();
     await this.accountDetailsPassword.fill(user.password)
     await this.dateOfBirthDay.selectOption('4');
@@ -84,15 +93,33 @@ export class SignUpLoginPage {
     await this.city.fill(user.city)
     await this.zipCode.fill(user.zipcode)
     await this.mobileNumber.fill(user.mobile)
-    await this.createAccountBtn.click()  
+    await this.createAccountBtn.click()
   }
 
   async getAccountTextAndContinueClick(): Promise<string> {
     const text = await this.textAccountCreated.textContent();
     if (!text) throw new Error("Text not found");
-    await this.continueBtn.click();
     return text;
-}
+  }
 
+  async clickContinue() {
+    await this.continueBtn.click();
+    
+  }
 
+  // --------- ASSERTIONS ----------
+  async verifySignupVisible() {
+    await expect(this.textNewUserSignup).toBeVisible();
+    await expect(this.textNewUserSignup).toHaveText(/New User Signup!/);
+  }
+  async verifyAccountCreated() {
+    await expect(this.textAccountCreated).toBeVisible();
+    await expect(this.textAccountCreated).toHaveText(/Account Created!/);
+  }
+
+  async verifyalreadyRegistertext(){
+    await expect(this.textalreadyregisterUser).toBeVisible();
+    await expect(this.textalreadyregisterUser).toHaveText(/Email Address already exist!/)
+  
+  }
 }

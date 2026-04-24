@@ -10,6 +10,9 @@ export class UniqueGenerator{
         return faker.internet.email();
     }
 
+    static getUniqueMessage(){
+        return faker.lorem.paragraph({min :1 , max:3})
+    }
 
 
 }

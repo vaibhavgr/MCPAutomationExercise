@@ -1,17 +1,28 @@
 import { UniqueGenerator } from '../utils/UniqueGenerator';
 export interface User {
-  name: string;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  company: string;
-  address: string;
-  city: string;
-  state: string;
-  zipcode: string;
-  mobile: string;
+    name: string;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    company: string;
+    address: string;
+    city: string;
+    state: string;
+    zipcode: string;
+    mobile: string;
 };
+
+export interface invalidloginUser {
+    email: string
+    password: string
+}
+
+export interface existingUser {
+    name: string
+    email: string
+}
+
 
 export const getNewUserData = (): User => {
     return {
@@ -27,4 +38,20 @@ export const getNewUserData = (): User => {
         zipcode: '110001',
         mobile: '9876543210'
     };
+
 };
+
+export const getinvalidUser = (): invalidloginUser => {
+    return {
+        email: "testuser123@gmail.com",
+        password: "Password@123"
+    };
+};
+export const getexistingUser = (): existingUser => {
+    return {
+        name : UniqueGenerator.getUniqueName(),
+        email: "rcb01@gmail.com",
+        
+    };
+};
+
