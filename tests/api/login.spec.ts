@@ -13,9 +13,15 @@ test.describe('API Testing - Login API Tesr Cases', () => {
         Logger.info(`Login API response: ${JSON.stringify(response)}`);
         expect(response).toHaveProperty('message');
         expect(String(response.message)).toContain('User exists');
+    });
+
+    test('TC_API_08_Post - Verify Login without email parameter', async ({ apiUtil }) => {
+        const { password } = getexistingUser();
+        const response = await apiUtil.postForm('api/verifyLogin', { password });
+        Logger.info(`Login API response (no email): ${JSON.stringify(response)}`);
         
-
-
+        expect(response.responseCode).toBe(400);
+        expect(response.message).toContain('Bad request, email or password parameter is missing in POST request.');
     });
 
 });
