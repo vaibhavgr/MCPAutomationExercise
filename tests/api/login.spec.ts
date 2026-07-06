@@ -24,4 +24,12 @@ test.describe('API Testing - Login API Tesr Cases', () => {
         expect(response.message).toContain('Bad request, email or password parameter is missing in POST request.');
     });
 
+    test('TC_API_09_Delete - Verify Login using DELETE method', async ({ apiUtil }) => {
+        const response = await apiUtil.delete('api/verifyLogin');
+        Logger.info(`Login API response (DELETE): ${JSON.stringify(response)}`);
+        
+        expect(response.responseCode).toBe(405);
+        expect(response.message).toContain('This request method is not supported.');
+    });
+
 });

@@ -47,9 +47,9 @@ export const test = baseTest.extend<MyFixtures>({
         });
 
         // 2. Check if the test is an authenticated test
-        const isAuthTest = testInfo.title.toLowerCase().includes('logged in') || 
-                           testInfo.tags?.includes('@auth') ||
-                           testInfo.file.toLowerCase().includes('authenticated');
+        const isAuthTest = testInfo.title.toLowerCase().includes('logged in') ||
+            testInfo.tags?.includes('@auth') ||
+            testInfo.file.toLowerCase().includes('authenticated');
 
         if (isAuthTest) {
             const authPath = path.resolve('playwright/.auth/user.json');
@@ -57,7 +57,7 @@ export const test = baseTest.extend<MyFixtures>({
             // If user.json doesn't exist, login and save it
             if (!fs.existsSync(authPath)) {
                 Logger.info('Auth file missing. Performing dynamic on-demand login...');
-                
+
                 const loginPage = new LoginPage(page);
                 await loginPage.goto();
 

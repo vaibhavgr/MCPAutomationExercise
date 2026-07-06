@@ -66,5 +66,17 @@ export class ApiUtils {
         Logger.info(`Response received from POST Form ${endpoint}: Status ${response.status()}`);
         return JSON.parse(responseText);
     }
+
+    /**
+     * Re-usable DELETE Request
+     * @param endpoint Target API Path
+     */
+    async delete(endpoint: string): Promise<any> {
+        Logger.info(`Sending DELETE request to: ${endpoint}`);
+        const response = await this.apiContext.delete(endpoint);
+        const responseText = await response.text();
+        Logger.info(`Response received from DELETE ${endpoint}: Status ${response.status()}`);
+        return JSON.parse(responseText);
+    }
 }
 
