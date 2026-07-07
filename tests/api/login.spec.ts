@@ -1,6 +1,6 @@
 import { test } from '@fixtures/baseTest';
 import { expect } from '@playwright/test';
-import { getexistingUser } from '@data/userData';
+import { getexistingUser, getinvalidUser } from '@data/userData';
 import { Logger } from '@utils/Logger';
 
 
@@ -30,6 +30,15 @@ test.describe('API Testing - Login API Tesr Cases', () => {
         
         expect(response.responseCode).toBe(405);
         expect(response.message).toContain('This request method is not supported.');
+    });
+
+    test('TC_API_10_Post - Verify Login with invalid details', async ({ apiUtil }) => {
+        const { email, password } = getinvalidUser();
+        const response = await apiUtil.postForm('api/verifyLogin', { email, password });
+        Logger.info(`Login API response (invalid details): ${JSON.stringify(response)}`);
+        
+        expect(response.responseCode).toBe(404);
+        expect(response.message).toContain('User not found!');
     });
 
 });
