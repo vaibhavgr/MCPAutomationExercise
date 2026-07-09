@@ -23,15 +23,40 @@ test.describe('E2E Interview Prep - Live Code Scenarios', () => {
 
     });
 
-    test.only('1.2.Multiple iframes ', async ({ page, context }) => {
+    test('1.2.Multiple iframes ', async ({ page, context }) => {
         await page.goto('https://demo.automationtesting.in/Frames.html');
         await page.locator('a[href="#Multiple"]').click();
-        //const textframe = page.frameLocator()
+        const textframe = page
+            .frameLocator('iframe[src="MultipleFrames.html"]')   // 1. Parent Frame
+            .frameLocator('iframe[src="SingleFrame.html"]')      // 2. Child Frame
+            .locator('input[type="text"]');                       // 3. Target Input box
+
+        // Type input values
+        await textframe.fill('Nested frames are working successfully!');
+
+
 
 
     });
 
     test('2. Multiple Windows/Tabs Scenario', async ({ page, context }) => {
+        await page.goto('https://the-internet.herokuapp.com/windows');
+        const heading = page.locator("//h3[text()='Opening a new window']");
+        await expect(heading).toHaveText('Opening a new window');
+
+        const link = page.locator("//a[text()='Click Here']");
+
+        const [newPage] = await Promise.all([
+            context.waitForEvent('page'),
+            link.click(),
+        ]);
+        await expect(newPage.locator('h3')).toHaveText('New Window');
+
+        await newPage.close();  
+
+
+
+
 
     });
 
