@@ -52,7 +52,7 @@ test.describe('E2E Interview Prep - Live Code Scenarios', () => {
         ]);
         await expect(newPage.locator('h3')).toHaveText('New Window');
 
-        await newPage.close();  
+        await newPage.close();
 
 
 
@@ -60,7 +60,15 @@ test.describe('E2E Interview Prep - Live Code Scenarios', () => {
 
     });
 
-    test('3. Shadow DOM Piercing Scenario', async ({ page }) => {
+    test.only('3. Shadow DOM Piercing Scenario', async ({ page }) => {
+        await page.goto('https://the-internet.herokuapp.com/shadowdom');
+        const shadowtext = page.locator('span[slot="my-text"]')
+        // 1. Check visibility
+        await expect(shadowtext).toBeVisible();
+
+        // 2. Assert inner text content
+        await expect(shadowtext).toHaveText("Let's have some different text!");
+
 
     });
 
@@ -70,6 +78,7 @@ test.describe('E2E Interview Prep - Live Code Scenarios', () => {
 
 
     test('5. File Upload Scenario', async ({ page }) => {
+
     });
 
 });
