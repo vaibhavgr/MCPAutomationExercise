@@ -60,7 +60,7 @@ test.describe('E2E Interview Prep - Live Code Scenarios', () => {
 
     });
 
-    test.only('3. Shadow DOM Piercing Scenario', async ({ page }) => {
+    test('3. Shadow DOM Piercing Scenario', async ({ page }) => {
         await page.goto('https://the-internet.herokuapp.com/shadowdom');
         const shadowtext = page.locator('span[slot="my-text"]')
         // 1. Check visibility
@@ -73,12 +73,32 @@ test.describe('E2E Interview Prep - Live Code Scenarios', () => {
     });
 
     test('4. Network Interception Scenario', async ({ page }) => {
-
+        Logger.info
     });
 
 
     test('5. File Upload Scenario', async ({ page }) => {
+        Logger.info('Navigating to upload page...');
+        await page.goto('https://the-internet.herokuapp.com/upload');
 
+        // Create temporary test file inside workspace
+        const tempFilePath = path.resolve('tests/interview-prep/temp_upload.txt');
+        const dir = path.dirname(tempFilePath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+        fs.writeFileSync(tempFilePath, 'This is a test upload content by Vaibhav.');
+
+        // Perform upload using input file locator
+        await page.locator('#file-upload').setInputFiles(tempFilePath);
+        await page.locator('#file-submit').click();
+
+        // Assert success message
+        await expect(page.locator('h3')).toHaveText('File Uploaded!');
+        Logger.info('File upload test case successfully verified.');
+
+        // Cleanup temporary file
+        fs.unlinkSync(tempFilePath);
     });
 
 });
