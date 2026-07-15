@@ -72,8 +72,21 @@ test.describe('E2E Interview Prep - Live Code Scenarios', () => {
 
     });
 
-    test('4. Network Interception Scenario', async ({ page }) => {
-        Logger.info
+    test('4. Drag and Drop Scenario', async ({ page }) => {
+        Logger.info('Navigating to drag and drop page...');
+        await page.goto('https://the-internet.herokuapp.com/drag_and_drop');
+
+        // Verify initial states
+        await expect(page.locator('#column-a header')).toHaveText('A');
+        await expect(page.locator('#column-b header')).toHaveText('B');
+
+        // Drag Box A and drop it inside Box B
+        await page.dragAndDrop('#column-a', '#column-b');
+
+        // Verify headers swapped
+        await expect(page.locator('#column-a header')).toHaveText('B');
+        await expect(page.locator('#column-b header')).toHaveText('A');
+        Logger.info('Drag and drop verified successfully.');
     });
 
 
